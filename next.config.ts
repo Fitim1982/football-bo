@@ -1,13 +1,17 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // Ignoriert TypeScript-Fehler beim Build, damit Vercel durchläuft
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  // Ignoriert ESLint-Warnungen beim Build
   eslint: {
-    // Schaltet ESLint-Prüfungen während des Vercel-Builds stumm
     ignoreDuringBuilds: true,
   },
-  typescript: {
-    // Erlaubt den Build, selbst wenn TypeScript-Typenfehler vorliegen
-    ignoreBuildErrors: true,
+  // Ermöglicht die Nutzung von Top-Level Await (wichtig für Data-Fetching)
+  webpack: (config) => {
+    config.experiments = { ...config.experiments, topLevelAwait: true };
+    return config;
   },
 };
 
